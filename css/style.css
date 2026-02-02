@@ -46,19 +46,87 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 40px;
+}
+
+.sketch-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    height: 85%;
+    background-color: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 
+        0 10px 20px rgba(0, 0, 0, 0.05),
+        0 25px 50px rgba(38, 70, 83, 0.15),
+        0 45px 90px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.canvas-toolbar {
+    background-color: #f8f9fa;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    gap: 25px;
+    border-bottom: 1px solid #eee;
+}
+
+.tool-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--charcoal-blue);
+}
+
+#color-picker {
+    border: none;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    background: none;
+}
+
+#color-picker::-webkit-color-swatch-wrapper { padding: 0; }
+#color-picker::-webkit-color-swatch {
+    border: 2px solid #ddd;
+    border-radius: 4px;
+}
+
+#btn-clear {
+    background-color: #ffffff;
+    color: var(--burnt-peach);
+    border: 1px solid var(--burnt-peach);
+    padding: 6px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    transition: all 0.2s;
+}
+
+#btn-clear:hover {
+    background-color: var(--burnt-peach);
+    color: white;
 }
 
 #sketch-canvas {
-    width: 70%;
-    height: 80%;
-    background-color: #ffffff;
-    border-radius: 20px;
-    border: 1px solid rgba(247, 247, 240, 0.8);
+    flex: 1;
+    width: 100%;
     cursor: crosshair;
-    
-    box-shadow: 
-        0 10px 20px rgba(0, 0, 0, 0.05),
-        0 25px 50px rgba(38, 70, 83, 0.12),
-        0 45px 90px rgba(0, 0, 0, 0.08);
+    background-color: white;
+}
+
+@media (max-width: 850px) {
+    .sketch-wrapper {
+        width: 95%;
+        height: 80%;
+    }
 }

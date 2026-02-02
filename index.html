@@ -14,8 +14,23 @@
     </header>
 
     <main class="canvas-container">
-        <canvas id="sketch-canvas" aria-label="Interactive design whiteboard">
-        </canvas>
+        <div class="sketch-wrapper"> 
+            <nav class="canvas-toolbar">
+                <div class="tool-group">
+                    <label for="color-picker">Color:</label>
+                    <input type="color" id="color-picker" value="#e76f51">
+                </div>
+                
+                <div class="tool-divider"></div>
+                
+                <button id="btn-clear" class="icon-btn" title="Șterge tot">
+                    <span>Erase All</span>
+                </button>
+            </nav> 
+
+            <canvas id="sketch-canvas" aria-label="Interactive design whiteboard"></canvas>
+
+        </div> 
     </main>
 </body>
 </html>
