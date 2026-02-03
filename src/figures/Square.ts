@@ -10,9 +10,16 @@ export class Square extends Figure {
     }
 
     draw(ctx: CanvasRenderingContext2D): void {
-        ctx.fillStyle = this.color;
+        const posX = this.x - this.size / 2;
+        const posY = this.y - this.size / 2;
 
-        ctx.fillRect(this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
+        ctx.fillStyle = this.color;
+        ctx.fillRect(posX, posY, this.size, this.size);
+
+        ctx.strokeStyle = "#000000"; 
+        ctx.lineWidth = 1;          
+        
+        ctx.strokeRect(posX, posY, this.size, this.size);
     }
 
     isPointInside(mouseX: number, mouseY: number): boolean {

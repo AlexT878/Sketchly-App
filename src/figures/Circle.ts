@@ -11,13 +11,18 @@ export class Circle extends Figure {
 
     draw(ctx: CanvasRenderingContext2D): void {
         ctx.fillStyle = this.color;
+        ctx.strokeStyle = "#000000";
+        ctx.lineWidth = 1;
 
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
         ctx.closePath();
+        
         ctx.fill();
+        ctx.stroke();
     }
 
+    // TODO IMPLEMENT MORE PRECISE METHOD
     isPointInside(mouseX: number, mouseY: number): boolean {
         const left = this.x - this.radius;
         const right = this.x + this.radius;

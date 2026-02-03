@@ -11,6 +11,8 @@ export class Triangle extends Figure {
 
     draw(ctx: CanvasRenderingContext2D): void {
         ctx.fillStyle = this.color;
+        ctx.strokeStyle = "#000000";
+        ctx.lineWidth = 1;
 
         const halfWidth = this.size / 2;
 
@@ -19,7 +21,9 @@ export class Triangle extends Figure {
         ctx.lineTo(this.x - halfWidth, this.y + halfWidth);
         ctx.lineTo(this.x + halfWidth, this.y + halfWidth);
         ctx.closePath();
+        
         ctx.fill();
+        ctx.stroke();
     }
     
     // TODO IMPLEMENT MORE PRECISE METHOD

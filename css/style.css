@@ -121,6 +121,11 @@ body {
     color: var(--charcoal-blue);
 }
 
+.figure-selector {
+    display: flex;
+    gap: 1rem;
+}
+
 #color-picker {
     border: none;
     width: 32px;
