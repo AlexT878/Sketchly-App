@@ -4,9 +4,10 @@ import { Triangle } from '../figures/Triangle.js';
 import { Circle } from '../figures/Circle.js';
 
 export enum FigureType {
-    SQUARE = 'square',
-    TRIANGLE = 'triangle',
-    CIRCLE = 'circle'
+    SQUARE = 'Square',
+    TRIANGLE = 'Triangle',
+    CIRCLE = 'Circle',
+    NONE = "None"
 }
 
 export class FigureFactory {

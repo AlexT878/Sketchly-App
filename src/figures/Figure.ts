@@ -1,3 +1,5 @@
+import type { FigureType } from "../core/FigureFactory.js";
+
 export abstract class Figure {
     protected x: number;
     protected y: number;
@@ -10,4 +12,8 @@ export abstract class Figure {
     } 
 
     abstract draw(ctx: CanvasRenderingContext2D): void;
+
+    abstract isPointInside(mouseX: number, mouseY: number): boolean;
+
+    abstract getType(): FigureType;
 }

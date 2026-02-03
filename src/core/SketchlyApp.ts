@@ -1,6 +1,7 @@
 import { FigureFactory } from './FigureFactory.js';
 import { FigureType } from './FigureFactory.js';
 import { DebugMonitor } from './DegubMonitor.js';
+import { Figure } from '../figures/Figure.js';
 
 export class SketchlyApp {
     private debugMonitor: DebugMonitor;
@@ -11,6 +12,7 @@ export class SketchlyApp {
     private clearBtn: HTMLButtonElement;
     private figureSelector: FigureType; 
     private toolButtons: NodeListOf<HTMLButtonElement>;
+    private figures: Figure[];
 
     constructor(canvasId: string) {
         this.debugMonitor = new DebugMonitor();
@@ -20,6 +22,7 @@ export class SketchlyApp {
         this.colorPicker = document.getElementById('color-picker') as HTMLInputElement;
         this.clearBtn = document.getElementById('btn-clear') as HTMLButtonElement;
         this.figureSelector = FigureType.SQUARE;
+        this.figures = [];
 
         this.toolButtons = document.querySelectorAll('.toolbar-btn');
 
@@ -42,17 +45,13 @@ export class SketchlyApp {
 
         this.canvas.addEventListener('mousemove', (e: MouseEvent) => {
             this.debugMonitor.updateMouseCanvasPosition(e.offsetX, e.offsetY);
+            this.checkFiguresUnderMouse(e.offsetX, e.offsetY);
         })
 
         window.addEventListener('mousemove', (e: MouseEvent) => {
             this.debugMonitor.updateMouseWindowPosition(e.clientX, e.clientY);
         })
 
-        this.updateButtonUI();
-    }
-
-    private setTool(type: FigureType) {
-        this.figureSelector = type;
         this.updateButtonUI();
     }
 
@@ -71,10 +70,32 @@ export class SketchlyApp {
         const selectedColor = this.colorPicker.value;
 
         const figure = FigureFactory.create(this.figureSelector, x, y, selectedColor);
+        this.figures.push(figure);
         figure.draw(this.ctx);
+    }
+
+    private checkFiguresUnderMouse(mouseX: number, mouseY: number) {
+        let found = false;
+
+        this.figures.forEach((figure, index) => {
+            if (figure.isPointInside(mouseX, mouseY)) {
+                this.debugMonitor.updateCurrentFigure(figure.getType(), index);
+                found = true; 
+            }
+        });
+
+        if (!found) {
+            this.debugMonitor.updateCurrentFigure(FigureType.NONE, -1);
+        }
     }
 
     private clearCanvas(): void {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.figures = [];
+    }
+
+    private setTool(type: FigureType) {
+        this.figureSelector = type;
+        this.updateButtonUI();
     }
 }

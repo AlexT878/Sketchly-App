@@ -121,13 +121,6 @@ body {
     color: var(--charcoal-blue);
 }
 
-.tool-divider {
-    width: 1px;
-    height: 24px;
-    background-color: #e0e0e0;
-    margin: 0 10px;
-}
-
 #color-picker {
     border: none;
     width: 32px;

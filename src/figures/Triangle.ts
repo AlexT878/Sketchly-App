@@ -1,4 +1,5 @@
 import { Figure } from "./Figure.js";
+import type { FigureType } from "../core/FigureFactory.js";
 
 export class Triangle extends Figure {
     private size: number;
@@ -19,5 +20,13 @@ export class Triangle extends Figure {
         ctx.lineTo(this.x + halfWidth, this.y + halfWidth);
         ctx.closePath();
         ctx.fill();
+    }
+
+    isPointInside(mouseX: number, mouseY: number): boolean {
+        throw new Error("Not yet implemented.");
+    }
+
+    getType(): FigureType {
+        throw new Error("Not yet implemented.");
     }
 }
