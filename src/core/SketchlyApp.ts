@@ -1,7 +1,10 @@
 import { FigureFactory } from './FigureFactory.js';
 import { FigureType } from './FigureFactory.js';
+import { DebugMonitor } from './DegubMonitor.js';
 
 export class SketchlyApp {
+    private debugMonitor: DebugMonitor;
+
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
     private colorPicker: HTMLInputElement;
@@ -10,6 +13,8 @@ export class SketchlyApp {
     private toolButtons: NodeListOf<HTMLButtonElement>;
 
     constructor(canvasId: string) {
+        this.debugMonitor = new DebugMonitor();
+
         this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
         this.ctx = this.canvas.getContext('2d')!;
         this.colorPicker = document.getElementById('color-picker') as HTMLInputElement;
@@ -33,6 +38,14 @@ export class SketchlyApp {
                 const tool = button.getAttribute('data-tool') as FigureType;
                 this.setTool(tool);
             })
+        })
+
+        this.canvas.addEventListener('mousemove', (e: MouseEvent) => {
+            this.debugMonitor.updateMouseCanvasPosition(e.offsetX, e.offsetY);
+        })
+
+        window.addEventListener('mousemove', (e: MouseEvent) => {
+            this.debugMonitor.updateMouseWindowPosition(e.clientX, e.clientY);
         })
 
         this.updateButtonUI();
