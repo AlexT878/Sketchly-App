@@ -1,5 +1,5 @@
 import { Figure } from "./Figure.js";
-import type { FigureType } from "../core/FigureFactory.js";
+import { FigureType } from "../core/FigureFactory.js";
 
 export class Triangle extends Figure {
     private size: number;
@@ -21,12 +21,21 @@ export class Triangle extends Figure {
         ctx.closePath();
         ctx.fill();
     }
-
+    
+    // TODO IMPLEMENT MORE PRECISE METHOD
     isPointInside(mouseX: number, mouseY: number): boolean {
-        throw new Error("Not yet implemented.");
+        const left = this.x - this.size / 2;
+        const right = this.x + this.size / 2;
+        const top = this.y - this.size / 2;
+        const bottom = this.y + this.size / 2;
+
+        const isInsideX = mouseX >= left && mouseX <= right;
+        const isInsideY = mouseY >= top  && mouseY <= bottom;
+
+        return isInsideX && isInsideY;
     }
 
     getType(): FigureType {
-        throw new Error("Not yet implemented.");
+        return FigureType.TRIANGLE;
     }
 }

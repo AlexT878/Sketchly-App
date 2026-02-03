@@ -1,4 +1,4 @@
-import type { FigureType } from "../core/FigureFactory.js";
+import { FigureType } from "../core/FigureFactory.js";
 import { Figure } from "./Figure.js";
 
 export class Circle extends Figure {
@@ -19,10 +19,18 @@ export class Circle extends Figure {
     }
 
     isPointInside(mouseX: number, mouseY: number): boolean {
-        throw new Error("Not yet implemented.");
+        const left = this.x - this.radius;
+        const right = this.x + this.radius;
+        const top = this.y - this.radius;
+        const bottom = this.y + this.radius;
+
+        const isInsideX = mouseX >= left && mouseX <= right;
+        const isInsideY = mouseY >= top  && mouseY <= bottom;
+
+        return isInsideX && isInsideY;
     }
 
     getType(): FigureType {
-        throw new Error("Not yet implemented.");
+        return FigureType.CIRCLE;
     }
 }
