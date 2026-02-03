@@ -11,7 +11,6 @@ export class Square extends Figure {
     draw(ctx: CanvasRenderingContext2D): void {
         ctx.fillStyle = this.color;
 
-        // Draw the square centered on the click point
         ctx.fillRect(this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
     }
 }

@@ -3,7 +3,7 @@ import { Square } from '../figures/Square.js';
 import { Triangle } from '../figures/Triangle.js';
 import { Circle } from '../figures/Circle.js';
 
-enum FigureType {
+export enum FigureType {
     SQUARE = 'square',
     TRIANGLE = 'triangle',
     CIRCLE = 'circle'
