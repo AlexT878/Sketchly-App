@@ -1,5 +1,13 @@
 import { Square } from '../figures/Square.js';
 import { Triangle } from '../figures/Triangle.js';
+import { Circle } from '../figures/Circle.js';
+import { FigureFactory } from './FigureFactory.js';
+
+enum FigureType {
+    SQUARE = 'square',
+    TRIANGLE = 'triangle',
+    CIRCLE = 'circle'
+}
 
 export class SketchlyApp {
     private canvas: HTMLCanvasElement;
@@ -8,7 +16,8 @@ export class SketchlyApp {
     private clearBtn: HTMLButtonElement;
     private squareBtn: HTMLButtonElement;
     private triangleBtn: HTMLButtonElement;
-    private figureSelector: number; // 0 for square 1 for triangle
+    private circleBtn: HTMLButtonElement;
+    private figureSelector: FigureType; 
 
     constructor(canvasId: string) {
         this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
@@ -17,7 +26,8 @@ export class SketchlyApp {
         this.clearBtn = document.getElementById('btn-clear') as HTMLButtonElement;
         this.squareBtn = document.getElementById('btn-square') as HTMLButtonElement;
         this.triangleBtn = document.getElementById('btn-triangle') as HTMLButtonElement;
-        this.figureSelector = 0; // Square is default
+        this.circleBtn = document.getElementById('btn-circle') as HTMLButtonElement;
+        this.figureSelector = FigureType.SQUARE; // Square is default
 
         this.init();
     }
@@ -28,13 +38,14 @@ export class SketchlyApp {
 
         this.canvas.addEventListener('mousedown', (e) => this.onMouseDown(e));
         this.clearBtn.addEventListener('click', () => this.clearCanvas());
-        this.squareBtn.addEventListener('click', () => this.setTool(0));
-        this.triangleBtn.addEventListener('click', () => this.setTool(1));
+        this.squareBtn.addEventListener('click', () => this.setTool(FigureType.SQUARE));
+        this.triangleBtn.addEventListener('click', () => this.setTool(FigureType.TRIANGLE));
+        this.circleBtn.addEventListener('click', () => this.setTool(FigureType.CIRCLE));
 
         this.updateButtonUI();
     }
 
-    private setTool(type: number) {
+    private setTool(type: FigureType) {
         this.figureSelector = type;
         this.updateButtonUI();
     }
@@ -42,11 +53,13 @@ export class SketchlyApp {
     private updateButtonUI() {
         this.squareBtn.classList.remove("active");
         this.triangleBtn.classList.remove("active");
+        this.circleBtn.classList.remove("active");
 
-        if (this.figureSelector === 0) {
-            this.squareBtn.classList.add('active');
-        } else if (this.figureSelector === 1) {
-            this.triangleBtn.classList.add('active');
+        switch(this.figureSelector) {
+            case FigureType.SQUARE: this.squareBtn.classList.add('active'); break;
+            case FigureType.TRIANGLE: this.triangleBtn.classList.add('active'); break;
+            case FigureType.CIRCLE: this.circleBtn.classList.add('active'); break;
+            default: throw new Error("Figure not found!");
         }
     }
 
@@ -57,13 +70,8 @@ export class SketchlyApp {
 
         const selectedColor = this.colorPicker.value;
 
-        if(this.figureSelector == 0) {
-            const square = new Square(x, y, selectedColor, 50);
-            square.draw(this.ctx);
-        } else if (this.figureSelector == 1) {
-            const triangle = new Triangle(x, y, selectedColor, 50);
-            triangle.draw(this.ctx);
-        }
+        const figure = FigureFactory.create(this.figureSelector, x, y, selectedColor);
+        figure.draw(this.ctx);
     }
 
     private clearCanvas(): void {
