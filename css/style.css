@@ -75,22 +75,58 @@ body {
     border-bottom: 1px solid #eee;
 }
 
+.toolbar-btn {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    color: var(--charcoal-blue);
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-size: 1.1rem;
+}
+
+.toolbar-btn:hover {
+    background-color: #f0f0f0;
+    border-color: var(--verdigris);
+    color: var(--verdigris);
+    transform: translateY(-1px);
+}
+
+.toolbar-btn.active {
+    background-color: var(--sandy-brown);
+    color: white;
+    border-color: var(--sandy-brown);
+    box-shadow: 0 2px 8px rgba(42, 157, 143, 0.3);
+}
+
 .tool-group {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px; 
     font-size: 0.8rem;
     font-weight: 700;
-    text-transform: uppercase;
     color: var(--charcoal-blue);
+}
+
+.tool-divider {
+    width: 1px;
+    height: 24px;
+    background-color: #e0e0e0;
+    margin: 0 10px;
 }
 
 #color-picker {
     border: none;
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     cursor: pointer;
     background: none;
+    padding: 0;
 }
 
 #color-picker::-webkit-color-swatch-wrapper { padding: 0; }

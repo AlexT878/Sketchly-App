@@ -6,6 +6,7 @@
     <title>Sketchly</title>
     
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script type="module" src="./dist/app.js"></script>
 </head>
 <body>
@@ -19,11 +20,17 @@
                 <div class="tool-group">
                     <label for="color-picker">Color:</label>
                     <input type="color" id="color-picker" value="#e76f51">
+                    <button id="btn-square" class="toolbar-btn" title="Change to square">
+                        <i class="fa-solid fa-square"></i>
+                    </button>
+                    <button id="btn-triangle" class="toolbar-btn" title="Change to triangle">
+                        <i class="fa-solid fa-play fa-rotate-270"></i>
+                    </button>
                 </div>
                 
                 <div class="tool-divider"></div>
                 
-                <button id="btn-clear" class="icon-btn" title="Șterge tot">
+                <button id="btn-clear" class="icon-btn" title="Erase all">
                     <span>Erase All</span>
                 </button>
             </nav> 
