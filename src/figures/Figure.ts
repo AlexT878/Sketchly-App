@@ -16,4 +16,9 @@ export abstract class Figure {
     abstract isPointInside(mouseX: number, mouseY: number): boolean;
 
     abstract getType(): FigureType;
+
+    moveTo(x: number, y: number): void {
+        this.x = x;
+        this.y = y;
+    }
 }

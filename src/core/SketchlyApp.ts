@@ -14,6 +14,9 @@ export class SketchlyApp {
     private toolButtons: NodeListOf<HTMLButtonElement>;
     private figures: Figure[];
 
+    private isDragging: boolean = false;
+    private selectedFigure: Figure | null = null;
+
     constructor(canvasId: string) {
         this.debugMonitor = new DebugMonitor();
 
@@ -27,6 +30,7 @@ export class SketchlyApp {
         this.toolButtons = document.querySelectorAll('.toolbar-btn');
 
         this.init();
+        this.render();
     }
 
     private init(): void {
@@ -34,6 +38,8 @@ export class SketchlyApp {
         this.canvas.height = this.canvas.clientHeight;
 
         this.canvas.addEventListener('mousedown', (e) => this.onMouseDown(e));
+        this.canvas.addEventListener('mousemove', (e) => this.onMouseMove(e));
+        window.addEventListener('mouseup', () => this.onMouseUp());
         this.clearBtn.addEventListener('click', () => this.clearCanvas());
         
         this.toolButtons.forEach(button => {
@@ -41,15 +47,6 @@ export class SketchlyApp {
                 const tool = button.getAttribute('data-tool') as FigureType;
                 this.setTool(tool);
             })
-        })
-
-        this.canvas.addEventListener('mousemove', (e: MouseEvent) => {
-            this.debugMonitor.updateMouseCanvasPosition(e.offsetX, e.offsetY);
-            this.checkFiguresUnderMouse(e.offsetX, e.offsetY);
-        })
-
-        window.addEventListener('mousemove', (e: MouseEvent) => {
-            this.debugMonitor.updateMouseWindowPosition(e.clientX, e.clientY);
         })
 
         this.updateButtonUI();
@@ -63,30 +60,37 @@ export class SketchlyApp {
     }
 
     private onMouseDown(event: MouseEvent): void {
-        const rect = this.canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
+        const figure = this.checkFiguresUnderMouse(event.offsetX, event.offsetY);
+        
+        if (figure) {
+            this.isDragging = true;
+            this.selectedFigure = figure;
+        } else {
+            const selectedColor = this.colorPicker.value;
+            const newFig = FigureFactory.create(this.figureSelector, event.offsetX, event.offsetY, selectedColor);
+            this.figures.push(newFig);
+        }
 
-        const selectedColor = this.colorPicker.value;
-
-        const figure = FigureFactory.create(this.figureSelector, x, y, selectedColor);
-        this.figures.push(figure);
-        figure.draw(this.ctx);
+        this.render();
     }
 
-    private checkFiguresUnderMouse(mouseX: number, mouseY: number) {
+    private checkFiguresUnderMouse(mouseX: number, mouseY: number): Figure | null {
         let found = false;
+        let returnFigure: Figure | null = null;
 
         this.figures.forEach((figure, index) => {
             if (figure.isPointInside(mouseX, mouseY)) {
                 this.debugMonitor.updateCurrentFigure(figure.getType(), index);
                 found = true; 
+                returnFigure = figure;
             }
         });
 
         if (!found) {
             this.debugMonitor.updateCurrentFigure(FigureType.NONE, -1);
         }
+
+        return returnFigure;
     }
 
     private clearCanvas(): void {
@@ -97,5 +101,26 @@ export class SketchlyApp {
     private setTool(type: FigureType) {
         this.figureSelector = type;
         this.updateButtonUI();
+    }
+
+    private render(): void {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.figures.forEach(f => f.draw(this.ctx));
+    }
+
+    private onMouseMove(event: MouseEvent): void {
+        this.debugMonitor.updateMouseCanvasPosition(event.offsetX, event.offsetY);
+        
+        if (this.isDragging && this.selectedFigure) {
+            this.selectedFigure.moveTo(event.offsetX, event.offsetY);
+            this.render(); 
+        } else {
+            this.checkFiguresUnderMouse(event.offsetX, event.offsetY);
+        }
+    }
+
+    private onMouseUp(): void {
+        this.isDragging = false;
+        this.selectedFigure = null;
     }
 }
