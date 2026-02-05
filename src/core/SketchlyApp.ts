@@ -1,5 +1,5 @@
 import { FigureFactory, FigureType } from './FigureFactory.js';
-import { DebugMonitor } from './DegubMonitor.js';
+import { DebugMonitor } from './DebugMonitor.js';
 import { Figure } from '../figures/Figure.js';
 import { InputHandler } from './InputHandler.js';
 
@@ -10,6 +10,7 @@ export class SketchlyApp {
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
     private colorPicker: HTMLInputElement;
+    private warningElement: HTMLDivElement;
     
     private figureSelector: FigureType = FigureType.SQUARE;
     private figures: Figure[] = [];
@@ -20,6 +21,7 @@ export class SketchlyApp {
         this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
         this.ctx = this.canvas.getContext('2d')!;
         this.colorPicker = document.getElementById('color-picker') as HTMLInputElement;
+        this.warningElement = document.getElementById('warning-msg') as HTMLDivElement;
 
         this.canvas.width = this.canvas.clientWidth;
         this.canvas.height = this.canvas.clientHeight;
@@ -39,12 +41,19 @@ export class SketchlyApp {
 
     private handleMouseDown(x: number, y: number): void {
         const figure = this.checkFiguresUnderMouse(x, y);
+        let colission = false;
         
         if (figure) {
             this.selectedFigure = figure;
         } else {
             const newFig = FigureFactory.create(this.figureSelector, x, y, this.colorPicker.value);
-            this.figures.push(newFig);
+            this.figures.forEach(figure => {
+                if(Figure.checkColission(newFig, figure)) {
+                    colission = true;
+                    this.renderColissionMessage();
+                }
+            })
+            if(!colission) this.figures.push(newFig);
         }
         this.render();
     }
@@ -101,5 +110,11 @@ export class SketchlyApp {
     private render(): void {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.figures.forEach(f => f.draw(this.ctx));
+    }
+
+    private renderColissionMessage(): void {
+        this.warningElement.classList.remove('fade-animation');
+        void this.warningElement.offsetWidth;
+        this.warningElement.classList.add('fade-animation');
     }
 }

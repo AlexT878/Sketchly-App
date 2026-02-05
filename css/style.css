@@ -165,3 +165,23 @@ body {
     cursor: crosshair;
     background-color: white;
 }
+
+#warning-msg {
+    align-self: center;
+    padding-bottom: 1.5rem;
+    color: var(--burnt-peach);
+    font-family: Arial, sans-serif;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.fade-animation {
+    animation: fadeInOut 2s forwards;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { opacity: 0; }
+}

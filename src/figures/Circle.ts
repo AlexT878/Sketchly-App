@@ -1,5 +1,5 @@
 import { FigureType } from "../core/FigureFactory.js";
-import { Figure } from "./Figure.js";
+import { Figure, type Bounds } from "./Figure.js";
 
 export class Circle extends Figure {
     private radius: number;
@@ -37,5 +37,16 @@ export class Circle extends Figure {
 
     getType(): FigureType {
         return FigureType.CIRCLE;
+    }
+
+    getBounds(): Bounds {
+        const halfSize = this.radius;
+
+        return {
+            left: this.x - halfSize,
+            right: this.x + halfSize,
+            top: this.y - halfSize,
+            bottom: this.y + halfSize
+        };
     }
 }

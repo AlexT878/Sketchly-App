@@ -1,4 +1,4 @@
-import { Figure } from "./Figure.js";
+import { Figure, type Bounds } from "./Figure.js";
 import { FigureType } from "../core/FigureFactory.js";
 
 export class Square extends Figure {
@@ -36,5 +36,16 @@ export class Square extends Figure {
 
     getType(): FigureType {
         return FigureType.SQUARE;
+    }
+
+    getBounds(): Bounds {
+        const halfSize = this.size / 2;
+
+        return {
+            left: this.x - halfSize,
+            right: this.x + halfSize,
+            top: this.y - halfSize,
+            bottom: this.y + halfSize
+        };
     }
 }
